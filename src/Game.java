@@ -18,6 +18,8 @@ public class Game extends JPanel implements KeyListener, ActionListener {
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+        paddle = new Paddle();
+        ball = new Ball(10, Color.cyan);
         timer = new Timer(10, this);
         timer.start();
     }
@@ -29,9 +31,7 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 //                bricks[i*j].setPosition(j*10,i*10);
 //            }
 //        }
-        paddle = new Paddle();
         paddle.setPosition(getWidth()/2,getHeight()-50);
-        ball = new Ball(10, Color.cyan);
         ball.setPosition(getWidth()/2,getHeight()/2);
     }
 
