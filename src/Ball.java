@@ -1,7 +1,7 @@
 import java.awt.*;
 
 public class Ball {
-    private int x, y, r, dx = 3, dy = -3;
+    private int x, y, r, speed = 3, dx = speed, dy = -speed;
     private Color color;
     private Board board;
 
@@ -12,10 +12,10 @@ public class Ball {
     }
 
     public void move() {
-        if (y < 0 || y + r*2 > board.getHeight()) {
+        if (y < 0 || y + r * 2 > board.getHeight()) {
             dy *= -1;
         }
-        if (x < 0 || x + r*2 > board.getWidth()) {
+        if (x < 0 || x + r * 2 > board.getWidth()) {
             dx *= -1;
         }
         x += dx;
@@ -28,7 +28,23 @@ public class Ball {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, r*2, r*2);
+        return new Rectangle(x, y, r * 2, r * 2);
+    }
+
+    public Rectangle getBoundsLeft() {
+        return new Rectangle(x, y, speed, r * 2);
+    }
+
+    public Rectangle getBoundsRight() {
+        return new Rectangle(x + r * 2 - speed, y, speed, r * 2);
+    }
+
+    public Rectangle getBoundsBottom() {
+        return new Rectangle(x, y + r * 2 - speed, r * 2, speed);
+    }
+
+    public Rectangle getBoundsTop() {
+        return new Rectangle(x, y, r * 2, speed);
     }
 
     public void checkCollisions(Paddle paddle) {
@@ -37,16 +53,36 @@ public class Ball {
         }
     }
 
-    public void checkCollisions(Brick brick) {
-        if(brick.isAlive() && getBounds().intersects(brick.getBounds())){
-            if(x-r >= brick.getX() && x+r <= brick.getX()+brick.getWidth() && y <= brick.getY()+brick.getHeight() && y >= brick.getY()+brick.getHeight()+dy){
-                dy = -dy;
-            } else if(x-r >= brick.getX() && x+r <= brick.getX()+brick.getWidth() && y+r*2 >= brick.getY() && y+r*2 <= brick.getY()-dy){
-                dy = -dy;
-            } else if(x >= brick.getX() && x <= brick.getX()+brick.getWidth() && y <= brick.getY()+brick.getHeight() && y >= brick.getY()+brick.getHeight()+dy){
-                dy = -dy;
+    public boolean checkCollision(Brick brick) {
+        if (brick.isAlive() && getBounds().intersects(brick.getBounds())) {
+            if (getBoundsLeft().intersects(brick.getBoundsRight())) {
+                return true;
+            } else if (getBoundsRight().intersects(brick.getBoundsLeft())) {
+                return true;
+            } else if(getBoundsTop().intersects(brick.getBoundsBottom())){
+                return true;
+            } else if(getBoundsBottom().intersects(brick.getBoundsTop())){
+                return true;
             }
-            brick.setAlive(false);
+        }
+        return false;
+    }
+
+    public void checkCollisions(Brick brick) {
+        if (brick.isAlive() && getBounds().intersects(brick.getBounds())) {
+            if (getBoundsLeft().intersects(brick.getBoundsRight())) {
+                dx = -dx;
+                brick.setAlive(false);
+            } else if (getBoundsRight().intersects(brick.getBoundsLeft())) {
+                dx = -dx;
+                brick.setAlive(false);
+            } else if(getBoundsTop().intersects(brick.getBoundsBottom())){
+                dy = -dy;
+                brick.setAlive(false);
+            } else if(getBoundsBottom().intersects(brick.getBoundsTop())){
+                dy = -dy;
+                brick.setAlive(false);
+            }
         }
     }
 

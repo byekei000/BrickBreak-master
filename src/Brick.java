@@ -25,6 +25,22 @@ public class Brick {
         return new Rectangle(x, y, width, height);
     }
 
+    public Rectangle getBoundsLeft() {
+        return new Rectangle(x, y, 1, height);
+    }
+
+    public Rectangle getBoundsRight() {
+        return new Rectangle(x + width-2, y, 1, height);
+    }
+
+    public Rectangle getBoundsBottom() {
+        return new Rectangle(x, y + height-2, width, 1);
+    }
+
+    public Rectangle getBoundsTop() {
+        return new Rectangle(x, y-2, width, 1);
+    }
+
     public void setAlive(boolean alive) {
         this.alive = alive;
     }

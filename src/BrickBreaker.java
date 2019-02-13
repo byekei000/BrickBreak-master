@@ -9,7 +9,7 @@ public class BrickBreaker extends JFrame implements KeyListener {
         setResizable(false);
         setVisible(true);
         setFocusable(true);
-        setTitle("Pong");
+        setTitle("BrickBreaker");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         board = new Board(this, 800, 600);
         add(board);

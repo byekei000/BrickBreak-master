@@ -15,10 +15,18 @@ public class Board extends JPanel implements ActionListener {
     public Board(BrickBreaker brickBreaker, int width, int height) {
         setPreferredSize(new Dimension(width, height));
         paddle = new Paddle(150, 25, Color.cyan, this, brickBreaker);
-        ball = new Ball(25, Color.cyan, this);
+        ball = new Ball(15, Color.cyan, this);
         for (int i = 0; i < bricks.length; i++) {
             for (int j = 0; j < bricks[0].length; j++) {
-                bricks[i][j] = new Brick(50, 30, Color.BLUE);
+                Color color = Color.black;
+                int rand = (int)(Math.random()*4);
+                switch(rand){
+                    case 0: color = Color.cyan; break;
+                    case 1: color = Color.yellow; break;
+                    case 2: color = Color.red; break;
+                    case 3: color = Color.green; break;
+                }
+                bricks[i][j] = new Brick(60, 40, color);
             }
         }
     }
@@ -26,7 +34,7 @@ public class Board extends JPanel implements ActionListener {
     public void init() {
         for (int i = 0; i < bricks.length; i++) {
             for (int j = 0; j < bricks[0].length; j++) {
-                bricks[i][j].setPosition(j * 51 + 150, i * 31 + 50);
+                bricks[i][j].setPosition(j * 61 + 125, i * 41 + 50);
             }
         }
         paddle.setPosition(getWidth() / 2, getHeight() - 50);
@@ -58,11 +66,16 @@ public class Board extends JPanel implements ActionListener {
         ball.move();
 //        ball.setPosition(getMousePosition().x, getMousePosition().y);
         ball.checkCollisions(paddle);
-        for (int i = 0; i < bricks.length; i++) {
+        A: for (int i = 0; i < bricks.length; i++) {
             for (int j = 0; j < bricks[0].length; j++) {
+                boolean thing = ball.checkCollision(bricks[i][j]);
                 ball.checkCollisions(bricks[i][j]);
+                if(thing){
+                    break A;
+                }
             }
         }
+
         repaint();
     }
 }
