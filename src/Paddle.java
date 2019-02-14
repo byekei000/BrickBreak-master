@@ -31,8 +31,14 @@ public class Paddle {
     public void checkCollisions(PowerUp powerUp) {
         if (getBounds().intersects(powerUp.getBounds())) {
             switch(powerUp.getType()){
-                case 1: width += 25; break;
-                case 2: width -= 25; break;
+                case 1:
+                    if(width < board.getWidth()){
+                        width += 25; break;
+                    }
+                case 2:
+                    if(width > 50){
+                        width -= 25; break;
+                    }
                 case 3: ball.lowerSpeed(); break;
                 case 4: ball.raiseSpeed(); break;
             }
@@ -41,10 +47,7 @@ public class Paddle {
     }
 
     public boolean checkCollision(PowerUp powerUp) {
-        if (getBounds().intersects(powerUp.getBounds())) {
-            return true;
-        }
-        return false;
+        return getBounds().intersects(powerUp.getBounds());
     }
 
     public void setPosition(int x, int y) {

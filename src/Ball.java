@@ -61,9 +61,7 @@ public class Ball {
                 return true;
             } else if(getBoundsTop().intersects(brick.getBoundsBottom())){
                 return true;
-            } else if(getBoundsBottom().intersects(brick.getBoundsTop())){
-                return true;
-            }
+            } else return getBoundsBottom().intersects(brick.getBoundsTop());
         }
         return false;
     }
@@ -84,18 +82,6 @@ public class Ball {
                 brick.setAlive(false);
             }
         }
-    }
-
-    public int getR() {
-        return r;
-    }
-
-    public int getX() {
-        return x + r;
-    }
-
-    public int getY() {
-        return y + r;
     }
 
     public void setPosition(int x, int y) {
