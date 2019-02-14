@@ -5,15 +5,17 @@ public class Paddle {
     private int x, y;
     private Color color;
     private Board board;
+    private Ball ball;
     private BrickBreaker brickBreaker;
 
-    public Paddle(int width, int height, Color color, Board board, BrickBreaker brickBreaker) {
+    public Paddle(int width, int height, Color color, Board board, BrickBreaker brickBreaker, Ball ball) {
         x = 0;
         y = 0;
         this.width = width;
         this.height = height;
         this.color = color;
         this.board = board;
+        this.ball = ball;
         this.brickBreaker = brickBreaker;
     }
 
@@ -26,6 +28,24 @@ public class Paddle {
         }
     }
 
+    public void checkCollisions(PowerUp powerUp) {
+        if (getBounds().intersects(powerUp.getBounds())) {
+            switch(powerUp.getType()){
+                case 1: width += 25; break;
+                case 2: width -= 25; break;
+                case 3: ball.lowerSpeed(); break;
+                case 4: ball.raiseSpeed(); break;
+            }
+            powerUp = null;
+        }
+    }
+
+    public boolean checkCollision(PowerUp powerUp) {
+        if (getBounds().intersects(powerUp.getBounds())) {
+            return true;
+        }
+        return false;
+    }
 
     public void setPosition(int x, int y) {
         this.x = x - width / 2;

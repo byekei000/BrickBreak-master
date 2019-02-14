@@ -102,4 +102,26 @@ public class Ball {
         this.x = x - r;
         this.y = y - r;
     }
+
+    public void lowerSpeed() {
+        if(speed > 1){
+            speed = speed-=1;
+            if(dx >= 0){
+                dx -=1;
+            } else dx+=1;
+            if(dy >= 0){
+                dy-=1;
+            }else dy+=1;
+        }
+    }
+
+    public void raiseSpeed() {
+        speed = speed+=1;
+        if(dx <= 0){
+            dx -=1;
+        } else dx+=1;
+        if(dy <= 0){
+            dy-=1;
+        }else dy+=1;
+    }
 }

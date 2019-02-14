@@ -11,11 +11,12 @@ public class Board extends JPanel implements ActionListener {
     private Ball ball;
     private Paddle paddle;
     private Brick[][] bricks = new Brick[3][9];
+    private PowerUp powerUp;
 
     public Board(BrickBreaker brickBreaker, int width, int height) {
         setPreferredSize(new Dimension(width, height));
-        paddle = new Paddle(150, 25, Color.cyan, this, brickBreaker);
         ball = new Ball(15, Color.cyan, this);
+        paddle = new Paddle(150, 25, Color.cyan, this, brickBreaker, ball);
         for (int i = 0; i < bricks.length; i++) {
             for (int j = 0; j < bricks[0].length; j++) {
                 Color color = Color.black;
@@ -52,6 +53,10 @@ public class Board extends JPanel implements ActionListener {
         paddle.paint(g);
         //ball
         ball.paint(g);
+        //powerUp
+        if(powerUp != null){
+            powerUp.paint(g);
+        }
         //bricks
         for (int i = 0; i < bricks.length; i++) {
             for (int j = 0; j < bricks[0].length; j++) {
@@ -64,13 +69,30 @@ public class Board extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         paddle.move();
         ball.move();
+        if(powerUp != null){
+            powerUp.move();
+        }
 //        ball.setPosition(getMousePosition().x, getMousePosition().y);
         ball.checkCollisions(paddle);
+        if(powerUp != null){
+            if(powerUp.getY() >= getHeight()){
+                powerUp = null;
+            }
+        }
+        if(powerUp != null){
+            paddle.checkCollisions(powerUp);
+            if(paddle.checkCollision(powerUp)){
+                powerUp = null;
+            }
+        }
         A: for (int i = 0; i < bricks.length; i++) {
             for (int j = 0; j < bricks[0].length; j++) {
                 boolean thing = ball.checkCollision(bricks[i][j]);
                 ball.checkCollisions(bricks[i][j]);
                 if(thing){
+                    if(powerUp == null){
+                        powerUp = new PowerUp(bricks[i][j]);
+                    }
                     break A;
                 }
             }
